@@ -12,7 +12,7 @@ For example, the Java Platform Logging used in JavaFX is now handled by the Spri
 
 1. Starts the Spring Boot application `SpringBootJfxApplication`. All Spring configurations are applied.
 2. The `CommandLineRunner` - `AppLauncher` is called by the Spring Boot application.
-3. `AppLauncher` launches a simple JavaFX application `AppEventEmitter`, which only emits a Spring event `StageReadyEvent`.
+3. `AppLauncher` launches a simple JavaFX application `StageEventEmitter`, which only emits a Spring event `StageReadyEvent`.
     * We do not prepare the primary stage here because we only have JavaFX context in this class. We won't be able to
         use Spring Boot feature for our primary stage.
 4. `StageInitializer` handles the `StageReadyEvent` and initialize the JavaFX stage.

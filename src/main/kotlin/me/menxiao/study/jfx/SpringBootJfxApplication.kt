@@ -27,7 +27,7 @@ class StageReadyEvent(stage: Stage) : ApplicationEvent(stage) {
 @Profile("!test")
 class AppLauncher : CommandLineRunner, ApplicationContextAware {
     override fun run(vararg args: String) {
-        Application.launch(AppEventEmitter::class.java, *args)
+        Application.launch(StageEventEmitter::class.java, *args)
     }
 
     override fun setApplicationContext(ctx: ApplicationContext) {
@@ -39,9 +39,9 @@ class AppLauncher : CommandLineRunner, ApplicationContextAware {
     }
 
     /**
-     * AppEventEmitter starts the JavaFX application, and forwards the primary stage to Spring Boot IoC world via event.
+     * StageEventEmitter starts the JavaFX application, and forwards the primary stage to Spring Boot IoC world via event.
      */
-    class AppEventEmitter : Application() {
+    class StageEventEmitter : Application() {
         override fun start(primaryStage: Stage) {
             applicationContext!!.publishEvent(StageReadyEvent(primaryStage))
         }
