@@ -3,6 +3,8 @@ package me.menxiao.study.jfx
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.layout.StackPane
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Component
 
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Component
  * dependency injection, and then initialize the primary Stage with the help of Spring beans and configurations.
  */
 @Component
-class StageInitializer : ApplicationListener<StageReadyEvent> {
+@EnableConfigurationProperties(StageInitializer.StageConfig::class)
+class StageInitializer(private val config: StageConfig) : ApplicationListener<StageReadyEvent> {
     override fun onApplicationEvent(event: StageReadyEvent) {
         val primaryStage = event.stage
 
@@ -21,7 +24,12 @@ class StageInitializer : ApplicationListener<StageReadyEvent> {
         val scene = Scene(StackPane(label), 640.0, 480.0)
 
         primaryStage.scene = scene
-        primaryStage.title = "Hello"
+        primaryStage.title = config.title
         primaryStage.show()
+    }
+
+    @ConfigurationProperties(prefix = "stage")
+    class StageConfig {
+        var title: String = "Hello"
     }
 }
