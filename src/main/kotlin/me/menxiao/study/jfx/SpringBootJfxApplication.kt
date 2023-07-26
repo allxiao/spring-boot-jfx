@@ -5,13 +5,12 @@ import javafx.application.Platform
 import javafx.stage.Stage
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @SpringBootApplication
@@ -25,12 +24,10 @@ class StageReadyEvent(stage: Stage) : ApplicationEvent(stage) {
  * AppLauncher is a single CommandLineRunner which just spawns the JavaFX entry application.
  */
 @Component
-@EnableConfigurationProperties(AppLauncher.AppLauncherConfig::class)
-class AppLauncher(private val config: AppLauncherConfig) : CommandLineRunner, ApplicationContextAware {
+@Profile("!test")
+class AppLauncher : CommandLineRunner, ApplicationContextAware {
     override fun run(vararg args: String) {
-        if (config.enabled) {
-            Application.launch(AppEventEmitter::class.java, *args)
-        }
+        Application.launch(AppEventEmitter::class.java, *args)
     }
 
     override fun setApplicationContext(ctx: ApplicationContext) {
@@ -52,14 +49,6 @@ class AppLauncher(private val config: AppLauncherConfig) : CommandLineRunner, Ap
         override fun stop() {
             Platform.exit()
         }
-    }
-
-    /**
-     * Config to enable / disable the JavaFX launch, which may be useful in tests.
-     */
-    @ConfigurationProperties(prefix = "app-launcher")
-    class AppLauncherConfig {
-        var enabled: Boolean = true
     }
 }
 
