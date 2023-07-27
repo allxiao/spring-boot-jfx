@@ -9,7 +9,6 @@ import org.springframework.boot.runApplication
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ApplicationEvent
-import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
@@ -31,11 +30,11 @@ class AppLauncher : CommandLineRunner, ApplicationContextAware {
     }
 
     override fun setApplicationContext(ctx: ApplicationContext) {
-        applicationContext = ctx as ConfigurableApplicationContext
+        applicationContext = ctx
     }
 
     companion object {
-        private var applicationContext: ConfigurableApplicationContext? = null
+        private var applicationContext: ApplicationContext? = null
     }
 
     /**
