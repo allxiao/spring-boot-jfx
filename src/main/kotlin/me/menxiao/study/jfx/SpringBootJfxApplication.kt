@@ -1,7 +1,6 @@
 package me.menxiao.study.jfx
 
 import javafx.application.Application
-import javafx.application.Platform
 import javafx.stage.Stage
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -43,10 +42,6 @@ class AppLauncher : CommandLineRunner, ApplicationContextAware {
     class StageEventEmitter : Application() {
         override fun start(primaryStage: Stage) {
             applicationContext!!.publishEvent(StageReadyEvent(primaryStage))
-        }
-
-        override fun stop() {
-            Platform.exit()
         }
     }
 }
